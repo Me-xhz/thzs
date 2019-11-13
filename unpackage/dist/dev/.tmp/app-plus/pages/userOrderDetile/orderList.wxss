@@ -1,0 +1,120 @@
+
+.info_btn.data-v-a288d8b4{
+	font-size: 24rpx;
+	height: 80rpx;
+	width: 120rpx;
+	border-radius: 5rpx;
+	line-height: 80rpx;
+	text-align: center;
+	margin-right: 20rpx;
+	color: #FFFFFF;
+	background-color: #ff0041;
+}
+.active.data-v-a288d8b4{
+	background-color: #C0C0C0;
+	color: #000000;
+}
+.price.data-v-a288d8b4{
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+}
+.item-info.data-v-a288d8b4 {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+}
+.item-photo.data-v-a288d8b4 {
+	width: 150rpx;
+	height: 150rpx;
+	margin: 0px 50rpx;
+}
+.item-photo >image.data-v-a288d8b4{
+	width: 150rpx;
+	height: 150rpx;
+}
+.goods-item.data-v-a288d8b4 {
+	height: 200rpx;
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	background-color: #FFFFFF;
+	border-top: 1rpx solid #C8C7CC;
+}
+.orderList.data-v-a288d8b4 {
+	height: 100%;
+	width: 100%;
+}
+.info-price.data-v-a288d8b4{
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	color: #030303;
+	font-size: 26rpx;
+	line-height: 30rpx;
+	margin-top: 20rpx;
+}
+.info-amount-font.data-v-a288d8b4 {
+	max-width: 100rpx;
+	font-size: 48rpx !important;
+	color: #39ACEB !important;
+	font-weight: 600 !important;
+	margin-left: auto;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	text-align: right;
+	margin-right: 30rpx;
+}
+.info-name.data-v-a288d8b4{
+	position: relative;
+	display: -webkit-box;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	   text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	width: 70%;
+	padding-right: 0 !important;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	color: #030303;
+	font-size: 26rpx;
+	font-weight: normal;
+	text-align: left;
+	line-height: 1.7;
+}
+.info-attr.data-v-a288d8b4{
+	position: relative;
+	display: -webkit-box;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	   text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	width: 80%;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	color: #979797;
+	font-size: 24rpx;
+	font-weight: normal;
+	text-align: left;
+	line-height: 1.8;
+}
+

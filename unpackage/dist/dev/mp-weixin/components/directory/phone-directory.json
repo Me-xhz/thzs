@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "phone-list": "/components/directory/phone-list",
+    "phone-alphabet": "/components/directory/phone-alphabet"
+  },
+  "component": true
+}

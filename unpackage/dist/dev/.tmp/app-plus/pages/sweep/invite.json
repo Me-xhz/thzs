@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "邀请码核销",
+  "usingComponents": {
+    "popup": "/components/popup"
+  }
+}

@@ -1,0 +1,77 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "提货助手"
+			}
+		},
+	
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},{
+            "path" : "pages/order_list/order_list",
+            "style" : {}
+        },{
+            "path" : "pages/pickup/pickup",
+            "style" : {
+				"navigationBarTitleText": "提货地点"
+			}
+        }
+        ,{
+            "path" : "pages/sweep/user_fetch",
+            "style": {
+            	"navigationBarTitleText": "用户取件"
+            }
+        }
+		,{
+		    "path" : "pages/sweep/affirm",
+		    "style": {
+		    	"navigationBarTitleText": "到货确认"
+		    }
+		}
+		,{
+		    "path" : "pages/sweep/invite",
+		    "style": {
+		    	"navigationBarTitleText": "邀请码核销"
+		    }
+		}
+        ,{
+            "path" : "pages/order_list/order_details/order_details",
+            "style": {
+            	"navigationBarTitleText": "提货订单详情"
+            }
+        },
+		{
+		    "path" : "pages/userOrderDetile/orderList",
+		    "style": {
+		    	"navigationBarTitleText": "提货订单列表"
+		    }
+		}
+        ,{
+            "path" : "pages/userOrderDetile/userOrderDetile",
+            "style": {
+            	"navigationBarTitleText": "订单详情"
+            }
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "提货助手",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F8F8F8"
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}

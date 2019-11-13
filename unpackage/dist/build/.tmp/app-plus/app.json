@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/order_list/order_list",
+    "pages/pickup/pickup",
+    "pages/sweep/user_fetch",
+    "pages/sweep/affirm",
+    "pages/sweep/invite",
+    "pages/order_list/order_details/order_details",
+    "pages/userOrderDetile/orderList",
+    "pages/userOrderDetile/userOrderDetile"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "提货助手",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "nvueCompiler": "weex",
+  "renderer": "auto",
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "提货助手",
+<<<<<<< HEAD
+  "compilerVersion": "2.3.7",
+  "usingComponents": {
+    "popup": "/components/popup"
+  }
+=======
+  "compilerVersion": "2.2.2",
+  "usingComponents": {}
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+}

@@ -1,0 +1,119 @@
+
+<<<<<<< HEAD
+.btn_box.data-v-097f3dc0 {
+=======
+.btn_box.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+}
+<<<<<<< HEAD
+.login_btn.data-v-097f3dc0 {
+=======
+.login_btn.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	height: 88rpx;
+	line-height: 88rpx;
+	width: 260rpx;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	background-color: #FFE150;
+	border-radius: 50px;
+
+	/* background-color: #bbb; */
+	/* 取消按钮的颜色 */
+}
+<<<<<<< HEAD
+.oauth-row.data-v-097f3dc0 {
+=======
+.oauth-row.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+<<<<<<< HEAD
+.oauth-image.data-v-097f3dc0 {
+=======
+.oauth-image.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	width: 100rpx;
+	height: 100rpx;
+	border: 1rpx solid #dddddd;
+	border-radius: 100rpx;
+	margin: 0 40rpx;
+	background-color: #ffffff;
+}
+<<<<<<< HEAD
+.oauth-image image.data-v-097f3dc0 {
+=======
+.oauth-image image.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	width: 60rpx;
+	height: 60rpx;
+	margin: 20rpx;
+}
+<<<<<<< HEAD
+.view_block.data-v-097f3dc0 {
+=======
+.view_block.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	width: 264rpx;
+	height: 380rpx;
+	padding-top: 208rpx;
+	margin: 0 auto 120rpx auto;
+}
+<<<<<<< HEAD
+.view_block>image.data-v-097f3dc0 {
+	height: 100%;
+	width: 100%;
+}
+.dlwz.data-v-097f3dc0 {
+=======
+.view_block>image.data-v-390a9050 {
+	height: 100%;
+	width: 100%;
+}
+.dlwz.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	display: block;
+	width: 416rpx;
+	height: 112rpx;
+	margin: 0 auto;
+	margin-top: 100rpx;
+}
+<<<<<<< HEAD
+.title.data-v-097f3dc0 {
+=======
+.title.data-v-390a9050 {
+>>>>>>> 4fc0aa52b24c17713d2d8771be5ce75eaac65d72
+	font-size: 36rpx;
+	color: #8f8f94;
+}
+

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "提货地点",
+  "usingComponents": {
+    "directory": "/components/directory/phone-directory"
+  }
+}
