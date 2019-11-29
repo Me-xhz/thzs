@@ -1,6 +1,9 @@
 <template>
 	<view class="orderList">
-		<view class="goods-item" v-for="(goods, index) in list" :key="index" @click="gotoDetile(goods)">
+		<view class="allItem">
+			
+		
+		<view class="goods-item" v-for="(goods, index) in list" :key="index" >
 			<view class="item-photo">
 				<image class="" :src="goods.sku_img"></image>
 			</view>
@@ -13,17 +16,18 @@
 						<text>{{goods.spec_key_name}}</text>
 					</view>
 					<view class="info-price">
-						<text class="icon-rmb">¥</text>{{goods.goods_price}}
 					</view>
 				</view>
-				<view class="info-amount info-amount-font">x{{goods.goods_num}}</view>
-				<view :class="goods.status == 0 ? 'info_btn' : 'info_btn active' " @click.stop="getTake(goods,index)" >
-						确定收货
-				</view>
+				<view class="info-amount info-amount-font">x{{goods.count}}</view>
 			</view>
 		</view>
-		<popup :isShow="isShow" :text="text"  confirm="确认收货"  :isFail='true'  cancal="取消" @succer="succer" @fail='fail'></popup>
-		<popup :isShow="isShow2" :text="text2"  confirm="确认收货"  :isFail='true'  cancal="取消" @succer="succer2" @fail='fail2'></popup>
+		<!-- v-if="status == 1" -->
+		<view v-if="status == 1"   class="btn" @click="submit">
+			 确认到货
+		</view>
+		</view>
+		<popup :isShow="isShow" :text="text"  confirm="确认"  :isFail='true'  cancal="取消" @succer="succer" @fail='fail'></popup>
+		<!-- <popup :isShow="isShow2" :text="text2"  confirm="确认收货"  :isFail='true'  cancal="取消" @succer="succer2" @fail='fail2'></popup> -->
 	</view>
 </template>
 
@@ -32,89 +36,53 @@
 	export default {
 		data() {
 			return {
-				text2:'是否确认收货',
-				isShow2:false,
 				isShow:false,
-				text:"该订单未进行确认收货，是否确认收货",
+				text:"箱子是否已经到达自提点？",
 				list: [],
-				orderSn:"763363",
-				inputValue:'',
-				order_sn:'',
-				newIndex:''
+				box_sn:"",
+				status:''
 			}
 		},
 		onLoad(e) {
 			_this=this
+			_this.box_sn=e.box_sn
+			_this.status=e.status
+			console.log(_this.status)
 			this.getList()
 			uni.showLoading({
 				title:'获取中..'
 			})
 		},
 		methods:{
-			fail2(){
-				this.isShow2=false
-			},
-			succer2(){
-				_this.list[_this.newIndex].status=0
-				_this.isShow2=false
-				return
-				uni.showLoading({
-					title:'提货中。。。'
-				})
-				_this.$http.getConfirmOrder(data).then(res => {
-					let resData = res.data
-					uni.hideLoading()
-					if (resData.success == 1) {
-						// 走失败 
-						console.log(resData)
-						_this.$common.toast(resData.msg)
-					
-					} else {
-						// 走成功
-						_this.$common.toast(resData.msg)
-						_this.list[_this.newIndex].status=1
-					}
-				})
-			},
-			getTake(res,index){
-				console.log(res)
-				if(res.status == 1) return 
-				_this.order_sn=res.order_sn
-				_this.newIndex =index
-				_this.isShow2=true
-				
-			},
-			showConfig(res){
-				// this.isShow=true
-				// this.inputValue=res
-			},
-			hideConfig(){
-				// this.inputValue=''
-				// this.isShow=false
+			submit(){
+				this.isShow=true
 			},
 			fail(res){
 				this.isShow=false
-				this.inputValue=''  
+			
 			},
 			succer(res){
-				uni.navigateTo({
-					url: '/pages/userOrderDetile/userOrderDetile?orderSn=' + this.inputValue
-				})
-			},
-			gotoDetile(res){
-				uni.navigateTo({
-					url: '/pages/userOrderDetile/userOrderDetile?orderSn=' + res.get_sn,
-				})
-			},
-			getList(){
-				_this.$http.getOrderList({order_sn: _this.orderSn}).then(res=>{
-					uni.hideLoading()
-					_this.list=res.data.result
-					if(_this.list.length==1){
-						uni.redirectTo({
-							url:'/pages/userOrderDetile/userOrderDetile?orderSn=' + _this.list[0].get_sn,
-						})
+					this.isShow=false
+					uni.showLoading({
+						title:'确认中...'
+					})
+					var data = {
+						box_sn: _this.box_sn
 					}
+					_this.$http.getConfirmbox(data).then(res => {
+						uni.hideLoading()
+						console.log(res.data)
+						_this.$common.toast(res.data.msg)
+						if (res.data.success == 1) {
+							_this.status=2
+						}
+					})
+			},
+		
+			getList(){
+				_this.$http.getBoxList({box_sn: _this.box_sn}).then(res=>{
+					uni.hideLoading()
+					_this.list=res.data.result.list
 					if(res.data.success !==1 ){
 						_this.$common.toast(res.data.msg)
 					}
@@ -125,6 +93,20 @@
 </script>
 
 <style scoped>
+	.allItem{
+			margin-bottom: 200rpx;
+	}
+	.btn{
+		position: fixed;
+		bottom: 0rpx;
+		left: 0rpx;
+		width: 100%;
+		height: 150rpx;
+		background-color: #EB3C39;
+		line-height: 150rpx;
+		text-align: center;
+		color:#FFFFFF;
+	}
 	.info_btn{
 		font-size: 24rpx;
 		height: 80rpx;
@@ -165,6 +147,7 @@
 		align-items: center;
 		background-color: #FFFFFF;
 		border-top: 1rpx solid #C8C7CC;
+	
 	}
 	.orderList {
 		height: 100%;

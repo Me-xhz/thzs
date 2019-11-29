@@ -3,7 +3,7 @@
 		<view class="node-number">
 			<view class="text" @tap="showNumberModel">查看商品数量统计</view>
 			<view class="number">订单数：{{boxOrderNumber}}</view>
-			<view class="picker-select" @tap="toggleTab(tabList[0])" v-if="pageStyle==1">
+			<view class="picker-select" @tap="toggleTab(tabList[0])" v-if="pageStyle==1|| pageStyle==4">
 				<view>{{pickerArrayName}}</view>
 				<view class="iconfont icon-btn_sanjiaoxiaojiantoux"></view>
 
@@ -27,8 +27,8 @@
 				<view class="list-item">物流单号：{{item.delivery_sn}}</view>
 				<view class="list-item">收货人：{{item.consignee}}</view>
 				<view class="list-item">手机号：{{item.mobile}}</view>
-				<view class="list-item" v-if="pageStyle == 1">是否发送取货码：{{item.is_noticed}}</view>
-				<view class="list-item" v-if="pageStyle == 1">取货码发送时间：{{item.order_send_time}}</view>
+				<view class="list-item" v-if="pageStyle==1|| pageStyle==4">是否发送取货码：{{item.is_noticed}}</view>
+				<view class="list-item" v-if="pageStyle==1|| pageStyle==4">取货码发送时间：{{item.order_send_time}}</view>
 				<view v-if="item.is_have_back == 1" class='list-status'>用户已申请售后</view>
 				<view class="list-btn-box">
 					<button class="list-btn">查看详情</button>
@@ -58,9 +58,9 @@
 		},
 		data() {
 			return {
-				oldSize:0,
+				oldSize: 0,
 				pageStyle: 1,
-				boxOrderNumber: 6,
+				boxOrderNumber: 0,
 				numberModelStatus: false,
 				mode: "range",
 				// defaultVal: [0, 0, 0, 0, 0, 0, 0],
@@ -80,6 +80,8 @@
 					label: "已售后",
 				}, {
 					label: "未提货",
+				}, {
+					label: "已发货未确认",
 				}],
 				//输入框的值
 				searchValue: '',
@@ -120,15 +122,24 @@
 			//最后的赋值 选择全部、已售后、未提货的确认事件
 			onConfirm(val) {
 				this.pickerArrayName = val.result;
+				console.log(val)
 				switch (val.result) {
 					case '全部':
 						this.pickerIndex = 0
+						this.pageStyle=1	
 						break;
 					case '已售后':
 						this.pickerIndex = 1
+						this.pageStyle=1
 						break;
 					case '未提货':
 						this.pickerIndex = 2
+						this.pageStyle=1
+						break;
+					case '已发货未确认':
+						this.pickerIndex = 0
+						this.pageStyle=4
+						console.log(this.pageStyle)
 						break;
 					default:
 						break;
@@ -167,7 +178,7 @@
 					url: './order_details/order_details?orderSn=' + order_sn
 				})
 			},
-			//获取提货点未领取商品列表 list_type:列表类型 默认未提货列表 1 未提货列表 2 在途中列表 3 售后完成列表
+			//获取提货点未领取商品列表 list_type:列表类型 默认未提货列表 1 未提货列表 2 在途中列表 3 售后完成列表 0已发货未确认
 			getNumberBox() {
 				var _this = this
 				var date = new Date(_this.dateValue).getTime();
@@ -186,7 +197,7 @@
 			// 获取提货点未领取的订单列表 list_type:列表类型 默认未提货列表 1 未提货列表 2 在途中列表 3 售后完成列表
 			searchSubmit() {
 				var _this = this;
-				let isold=false
+				let isold = false
 				var date = new Date(_this.dateValue).getTime();
 				var data = {
 					key_word: _this.searchValue,
@@ -198,26 +209,24 @@
 				}
 				_this.$http.getUnclaimedInfo(data).then(res => {
 					let resData = res.data
-					if(resData.result.boxOrderInfo.length >0){
-						
-						if(resData.result.boxOrderInfo.length !==_this.page_size){
-							_this.oldSize=resData.result.boxOrderInfo.length
+					if (resData.result.boxOrderInfo.length > 0) {
+
+						if (resData.result.boxOrderInfo.length !== _this.page_size) {
+							_this.oldSize = resData.result.boxOrderInfo.length
 							// 保存上次未满当前条数
-						}else{
-							
+						} else {
+
 						}
-						_this.page+=1
-						_this.boxOrderInfo = [..._this.boxOrderInfo ,...resData.result.boxOrderInfo]
-						_this.boxOrderNumber = resData.result.count
-						}else{
-							// console.log('没有更多了');
-							uni.showToast({
-								icon: "none",
-								title: '没有更多了',
-								duration: 500
-							});
-						}
-					
+						_this.page += 1
+						_this.boxOrderInfo = [..._this.boxOrderInfo, ...resData.result.boxOrderInfo]
+					} else {
+						uni.showToast({
+							icon: "none",
+							title: '没有更多了',
+							duration: 500
+						});
+					}
+					_this.boxOrderNumber = resData.result.count
 				})
 			},
 

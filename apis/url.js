@@ -27,9 +27,10 @@ const Url = 'https://api-t.st-llshop.surex.cc/v1/'
 //广州接口
 // var Url = 'http://api.shop.rp.surex.cc/v1/';
 
+
 //物流接口
 const ExpUrl = 'https://api-t.hys-express.surex.cc/v1/'
-// const ExpUrl = 'http://192.168.2.183/v1/'
+// const ExpUrl = 'http://192.168.2.183:8080/v1/'
 // 
 
 // 图标URL

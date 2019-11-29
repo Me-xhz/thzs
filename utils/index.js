@@ -68,7 +68,7 @@ function getTokenDebounce() {
 const reReqest = new Request()
 reReqest.setConfig(config => {
 	config.baseUrl = Url.Url /* 根域名不同 */
-	
+
 	return config
 })
 
@@ -110,9 +110,9 @@ http.interceptor.request((config, cancel) => { /* 请求之前拦截器 */
 		config = res
 	})
 
-	
+
 	//  这里判断 使用按个url
-	if(config.header['isExp']){
+	if (config.header['isExp']) {
 
 		config.baseUrl = Url.ExpUrl
 	} else {
@@ -122,20 +122,20 @@ http.interceptor.request((config, cancel) => { /* 请求之前拦截器 */
 })
 // 必须使用异步函数，注意
 http.interceptor.response(async (response) => { /* 请求之后拦截器 */
-	if (response.data.msg === 'token验证失败') {
+
+	if (response.data.msg == '10086') {
 		// 这里删除了一段以前的逻辑代码，现在的逻辑是如果token失效就会清除token等信息 跳转登录页面
 		//  或者也可以是先尝试静默登录
-		if(isShow) return 
-		isShow=true
-
+		if (isShow) return
+		isShow = true
 		uni.showModal({
-			content: '该功能需要登录，请先登录',
+			content: 'token过期,请重新登录',
 			title: '提示',
 			success(res) {
 				isShow = false
 				if (res.confirm) {
 					uni.removeStorage({
-						key: 'X-Authorization'
+						key: 'token'
 					})
 
 					uni.removeStorage({

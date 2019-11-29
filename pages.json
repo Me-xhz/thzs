@@ -48,7 +48,7 @@
 		{
 		    "path" : "pages/userOrderDetile/orderList",
 		    "style": {
-		    	"navigationBarTitleText": "提货订单列表"
+		    	"navigationBarTitleText": "箱内商品列表"
 		    }
 		}
         ,{

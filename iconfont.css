@@ -4,8 +4,9 @@
     font-weight: normal;
     font-style: normal;
 }
-
-
+  
+	/* x-font-woff2 */
+	/*  测试woff2  低版本ios手机上不兼容 */
 
 .iconfont {
   font-family: "iconfont" !important;
@@ -14,7 +15,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+ 
 .icon-65:before {
   content: "\e649";
 }
@@ -280,7 +281,7 @@
 }
 
 .icon-btn_daizhifux1:before {
-  content: "\e604";
+  content: "\e604"; 
 }
 
 .icon-btn_quanbudingdanx1:before {

@@ -84,6 +84,9 @@
 			scanCode() {
 				var _this = this;
 				// 只允许通过相机扫码
+				if (uni.getSystemInfoSync().platform == "ios") {
+					plus.key.hideSoftKeybord()
+				}
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {

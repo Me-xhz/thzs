@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "用户取件",
-  "usingComponents": {
-    "popup": "/components/popup"
-  }
-}

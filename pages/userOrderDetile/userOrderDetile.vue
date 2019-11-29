@@ -50,7 +50,7 @@
 			<view v-if="orderInfo.order_status == 1 && orderInfo.order_confirm_time != ''" class="info-item">订单提货时间：{{orderInfo.order_confirm_time}}</view>
 			<view v-if="orderInfo.order_status == 1" class="info-item">确认类型：{{orderInfo.confirm_type == 0 ? '用户确认收货' : '自提点确认收货'}}</view>
 		</view>
-		<view  @tap="submit" class="submit">一键提货</view>
+		<view  v-if="orderInfo.list.length !== 0" @tap="submit" class="submit">一键提货</view>
 		
 		<popup :isShow="isShow" :text="text"  :isFail='true'  confirm="确认收货"  cancal="取消" @succer="succer" @fail='fail'></popup>
 		<popup :isShow="isShow2" :text="text2" :isFail='isFail'   @succer="succer2" ></popup>
@@ -67,7 +67,7 @@
 				isShow2:false,
 				text:'是否确认收货',
 				isShow:false,
-				orderSn: "763363",
+				orderSn: "",
 				orderInfo: {},
 				data:{},
 			}
@@ -99,22 +99,21 @@
 			},
 			succer(){
 				let _this=this
+				_this.isShow=false
 				_this.$http.getConfirmOrder(_this.data).then(res => {
 					let resData = res.data
 					_this.$tool.getRouter(2).hideConfig()
+					_this.getOrder();
 					if (resData.success == 1) {
-						// 走失败 
-						_this.getOrder();
-						console.log(resData)
-						_this.$common.toast(resData.msg || '服务器异常')
+						// 走成功
+						console.log("回退")
+						uni.navigateBack()
+						_this.$common.toast(resData.msg)
 					
 					} else {
-						// 走成功
-						_this.$common.toast(resData.msg)
-						setTimeout(()=>{
-							uni.navigateTo()
-						},200)
-						return
+						// 走失败
+						_this.$common.toast(resData.msg || '服务器异常')
+						console.log(resData)
 					}
 				}).catch(err=>{
 					console.log(err)
@@ -139,7 +138,7 @@
 					if (resData.success == 1) {
 						_this.orderInfo = resData.result
 						console.log(resData)
-						if(resData.result.order_status == 2){
+						if(resData.result.list.length  !== 0){
 							this.$tool.getRouter(2).showConfig(this.orderSn)
 						}
 					} else {

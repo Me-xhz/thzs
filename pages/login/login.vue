@@ -4,25 +4,34 @@
 			<view class="view_block">
 				<image :src="imgUrl + '/img_dltt@2x01.png'" class="dltt"></image>
 			</view>
+			<view class="inpnt_code">
+				<view class="code_list">
+					<input type="text" value="" maxlength="11" v-model="allFrom.phone" placeholder="请输入手机号码" />
+				</view>
+				<view class="code_list">
+					<input type="text" value="" maxlength="4" v-model="allFrom.code" placeholder="请输入验证码" /><text :class="isTime? 'codeClass active' : 'codeClass' "
+					 @click="getCode">{{CodeTime}}</text>
+				</view>
+				<view class="login_code " @click="submit">
+					登录
+				</view>
+			</view>
 			<!-- #ifdef MP-WEIXIN -->
-			<view class="btn_box">
+			<!-- 			<view class="btn_box">
 				<button class="login_btn" open-type="getUserInfo" @getuserinfo="onGotUserInfo">
 					<text class="login_text">登录</text>
 				</button>
-			</view>
+			</view> -->
 			<!-- #endif -->
 			<!-- #ifdef APP-PLUS -->
-			<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}" v-for="provider in providerList"
+			<!-- 		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}" v-for="provider in providerList"
 			 :key="provider.value">
-				<!-- <view class="oauth-image" v-for="provider in providerList" :key="provider.value"> -->
-				<!-- <image :src="provider.image" @tap="oauth(provider.value)"></image> -->
 				<button class="login_btn" @tap="oauth(provider.value)">
 					<text class="login_text">登录</text>
 				</button>
-				<!-- </view> -->
-			</view>
+			</view> -->
 			<!-- #endif -->
-			<image :src="imgUrl + '/dlwz@2x01.png'" class="dlwz"></image>
+			<!-- <image :src="imgUrl + '/dlwz@2x01.png'" class="dlwz"></image> -->
 		</view>
 	</view>
 </template>
@@ -31,8 +40,8 @@
 	import {
 		setTokenStorage
 	} from '../../utils/tool.js'
-
 	export default {
+
 		data() {
 			return {
 				infoRes: {},
@@ -41,28 +50,104 @@
 				providerList: [],
 				hasProvider: false,
 				positionTop: 0,
-				psk: "",
-				Ras: ""
+				CodeTime: "获取验证码",
+				isTime: false,
+				allFrom: {},
+				setTime:null
 			}
 		},
 		onLoad() {
 			_this = this
 			this.initPosition()
 			this.initProvider()
-
+		},
+		onShow() {
+		},
+		onHide() {
+			clearInterval(_this.setTime)
+			_this.setTime=null
+			console.log(_this.setTime,'清空')
 		},
 		methods: {
+			submit() {
+				// 提交登录
+				if (!_this.$common.str.test(_this.allFrom.phone) || !_this.allFrom.code) {
+					_this.$common.toast('请输入正确的手机号或验证码')
+					return
+				}
+				uni.showLoading({
+					title:'登陆中...'
+				})
+				_this.$http.codeLogin({
+					code:_this.allFrom.code,
+					mobile:_this.allFrom.phone
+				}).then(res=>{
+					console.log('登录信息',res)
+					uni.hideLoading();
+					if(res.data.success == 1){
+						_this.$tool.setStorageSync("pickup", res.data.result)
+						// _this.$tool.setStorageSync("oldToken", _this.$tool.getTokenStorage())
+						setTokenStorage(res.data.result.token)
+						_this.$tool.setStorageSync('isLogin', true)
+						uni.reLaunch({
+							url: '../index/index'
+						})
+					}else{
+						_this.$common.toast(res.data.msg)
+					}
+				}).catch(err=>{
+					uni.hideLoading();
+				})
+
+			},
+			getCode() {
+				if (_this.isTime) {
+					return
+				}
+				// 获取短信验证码
+				if (!_this.$common.str.test(_this.allFrom.phone)) {
+					_this.$common.toast('请输入正确的手机号')
+					return
+				}
+				_this.$http.getCode({
+					mobile: _this.allFrom.phone
+				}).then((res) => {
+					console.log(res)
+					if(res.data.success == 1){
+						_this.$common.toast("发送成功")
+						_this.getCodeTime()
+					}else{
+						_this.$common.toast(res.data.msg || '发送失败！')
+					}
+				})
+				//发送请求之后在触发验证码
+			},
+			//倒计时
+			getCodeTime(res) {
+				clearInterval(_this.setTime)
+				let times = 60
+				_this.isTime = true
+				_this.setTime = setInterval(() => {
+					times--
+					_this.CodeTime = times + 's重试'
+					if (times == 0) {
+						_this.isTime = false
+						clearInterval(_this.setTime)
+						_this.CodeTime = '重新获取验证码'
+						return
+					}
+				}, 1000)
+			},
 			//获取用户信息
 			getUserInfo() {
 				this.$http.getUserInfo().then(res => {
 					console.log("用户信息", res)
 					if (res.data.result.has_express == 1) {
 						// 有权限登录
-						_this.$http.getExpressUserInfo().then(res=>{
-							console.log('物流信息',res)
-							_this.$tool.setStorageSync("pickup",res.data.result)
-							_this.$tool.setStorageSync("oldToken",_this.$tool.getTokenStorage())
-
+						_this.$http.getExpressUserInfo().then(res => {
+							console.log('物流信息', res)
+							_this.$tool.setStorageSync("pickup", res.data.result)
+							_this.$tool.setStorageSync("oldToken", _this.$tool.getTokenStorage())
 							setTokenStorage(res.data.result.token)
 							_this.$tool.setStorageSync('isLogin', true)
 							uni.hideLoading();
@@ -70,7 +155,6 @@
 								url: '../index/index'
 							})
 						})
-
 					} else {
 						uni.hideLoading();
 						this.$common.toast('暂无权限登录')
@@ -92,11 +176,12 @@
 			applogin(res) {
 				_this.$http.appLogin(res).then(res => {
 					// *app 登录没有其余多余的流程
+					console.log("报错信息", res)
 					setTokenStorage(res.data.result.token)
-					console.log(res)
 					_this.getUserInfo()
 				}).catch(err => {
-					console.log(err)
+					console.log("我是错误", err)
+					uni.hideLoading()
 				})
 			},
 			//此处登录之后重定向到首页
@@ -170,6 +255,7 @@
 						uni.getUserInfo({
 							provider: value,
 							success: (infoRes) => {
+
 								_this.infoRes = {
 									oauthCode: res.code,
 									suffix: 'wx',
@@ -194,6 +280,7 @@
 									mask: true
 								});
 								userInfo.oauth = "app"
+								console.log('我是用户信息', userInfo)
 								_this.applogin(userInfo)
 								// #endif
 							}
@@ -209,10 +296,66 @@
 </script>
 
 <style scoped>
+	.content{
+		height: 100%;
+		background-color: #FFFFFF;
+	}
+	.codeClass {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 250rpx;
+		font-size: 32rpx;
+		height: 80%;
+		line-height: 80%;
+		background-color: #FFE150;
+		border-radius: 50rpx;
+	}
+	.active{
+		background-color: #C8C7CC;
+	}
+
 	.btn_box {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.code {
+		background-color: #FFE150;
+		height: 70rpx;
+		line-height: 70rpx;
+		width: 150rpx;
+		text-align: center;
+		border-radius: 30px;
+	}
+
+	.code_list {
+		width: 80%;
+		height: 100rpx;
+		line-height: 100rpx;
+		padding-left: 30rpx;
+		margin: 0rpx auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1rpx solid rgba(0, 0, 0, .3);
+	}
+
+	.login_code {
+		height: 88rpx;
+		line-height: 88rpx;
+		width: 80%;
+		justify-content: center;
+		background-color: #FFE150;
+		border-radius: 50px;
+		text-align: center;
+		margin: 0rpx auto;
+		margin-top: 40rpx;
+	}
+
+	.login_code:active {
+		background-color: #FFE185;
 	}
 
 	.login_btn {
@@ -222,6 +365,7 @@
 		justify-content: center;
 		background-color: #FFE150;
 		border-radius: 50px;
+		text-align: center;
 
 		/* background-color: #bbb; */
 		/* 取消按钮的颜色 */
@@ -256,7 +400,7 @@
 		width: 264rpx;
 		height: 380rpx;
 		padding-top: 208rpx;
-		margin: 0 auto 120rpx auto;
+		margin: 0 auto 100rpx auto;
 	}
 
 	.view_block>image {

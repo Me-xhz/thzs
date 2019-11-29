@@ -23,27 +23,56 @@
 				</view>
 			</view>
 		</view>
+
+		<popup :isShow="isShow" :text="text" :isFail='true' confirm="确认" cancal="取消" @succer="succer" @fail='fail'></popup>
+		<popup :isShow="isShow2" :text="text2" :isFail='true' confirm="确认" cancal="取消" @succer="succer2" @fail='fail2'></popup>
 	</view>
 </template>
 
 <script>
+	var _this
 	export default {
 		data() {
 			return {
 				itemList: [],
-				inputValue: ""
+				inputValue: "",
+				isShow: false,
+				text: "",
+				allValue: {},
+				allBox: {},
+				text2: "箱子是否已经到达自提点?",
+				isShow2: false
 			}
 		},
 		onLoad() {
-
+			_this = this
 		},
 		onShow() {
 			this.getboxlist()
 		},
 		methods: {
+			succer2() {
+				_this.isShow2 = false
+				_this.confirmbox(_this.allBox);
+				_this.getboxlist();
+			},
+			fail2() {
+				_this.isShow2 = false
+			},
+			succer() {
+				// 点击确定
+				_this.isShow = false
+				_this.confirmbox(_this.allValue);
+			},
+			fail() {
+				_this.isShow = false
+			},
 			scanCode() {
 				var _this = this;
 				// 只允许通过相机扫码
+				if (uni.getSystemInfoSync().platform == "ios") {
+					plus.key.hideSoftKeybord()
+				}
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
@@ -71,19 +100,15 @@
 				var value = e.detail.value;
 				const reg = /^[a-zA-Z]{2}\d{7}[a-zA-Z]{1}\d{2}$/;
 				console.log(reg.test(value));
-				var content = "中转箱码为：" + value;
+				_this.text = "中转箱码为：" + value;
 				var confirmText = "确认";
 				if (value.length == 12 && reg.test(value) == false) {
 					_this.$common.toast("请输入正确的提货箱码")
 					return;
 				} else if (value.length == 12 && reg.test(value) == true) {
-					_this.$common.showModal(content,confirmText,function(res){
-						if (res.confirm) {
-							_this.confirmbox(value);
-						} else {
-							return
-						}
-					})
+					_this.isShow = true
+					_this.allValue = value
+
 					return;
 				}
 			},
@@ -104,16 +129,19 @@
 				})
 			},
 			goArrivalOrder(status, box_sn) {
+				
+				uni.navigateTo({
+					url:'../userOrderDetile/orderList?box_sn='+box_sn+'&status='+status
+				})
+				// 测试
+				return
 				if (status == 2) {
 					return
 				}
 				let _this = this;
-				_this.$common.showModal('箱子是否已经到达自提点？','确定',function(res){
-					if (res.confirm) {
-						_this.confirmbox(box_sn);
-						_this.getboxlist();
-					}
-				})
+				_this.allBox = box_sn
+				_this.text2 = '箱子是否已经到达自提点?'
+				_this.isShow2 = true
 			}
 		}
 	}

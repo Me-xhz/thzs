@@ -70,7 +70,7 @@
 			},
 			call(res){
 				uni.makePhoneCall({
-					phoneNumber:'18188902961',
+					phoneNumber:res,
 					success(res) { 
 						console.log(res)
 					}

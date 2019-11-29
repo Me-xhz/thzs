@@ -6,11 +6,12 @@
 			console.log('App Launch')
 			// #ifdef APP-PLUS
 			plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
-				let versionCode = widgetInfo.versionCode
+				let versionCode = widgetInfo.version
 				// let version = widgetInfo.version.replace(/\./g, '');
-				checkUpdater(versionCode)
+				console.log("我是版本信息",widgetInfo)
+				checkUpdater(versionCode) 
 			})
-			// #endif
+			// #endif 
 			
 		},
 		onShow: function() {

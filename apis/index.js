@@ -82,5 +82,13 @@ apis.getOrderList=(data,config)=>http.post('takedelivery/getGoodsList',data,ExpC
 // 邀请码核销(注：商城域名)
 apis.getInvitation = (data, config) => http.post('InviteActivityReceiveList/exchange', data, config)
 
+//获取提货箱子商品集合
+apis.getBoxList=(data,config)=>http.post('takedelivery/getboxdata',data,ExpConfig(config))
+
+// 获取手机验证码
+apis.getCode=(data,config)=>http.post('index/logincode',data,ExpConfig(config))
+//登录
+
+apis.codeLogin =(data ,config )=>http.post('index/mobilelogin',data,ExpConfig(config))
 
 export default apis

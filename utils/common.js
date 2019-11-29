@@ -79,3 +79,4 @@ export function setPay(data,success,fail,complete){
 	uni.requestPayment(dataMap);
 }
 
+export var str = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/

@@ -9,7 +9,7 @@
 			</view>
 			<view class="order-box" @tap='toNodelivery' data-style='1'>
 				<view class="order">
-					{{order_num.num||'0'}}
+					{{order_num.num ||  0}}
 				</view>
 				<view class="text">
 					到货剩余订单数量
@@ -40,7 +40,13 @@
 				<view class="flex-text">邀请码核销</view>
 			</view>
 		</view>
-		
+
+		<!-- #ifdef APP-PLUS -->
+		<view class="version">
+			版本号:{{versionCode}}
+		</view>
+		<!-- #endif -->
+
 	</view>
 </template>
 
@@ -51,9 +57,10 @@
 			return {
 				order_num: {},
 				pickup: {},
+				versionCode: "1.4.5",
 			}
 		},
-	
+
 		onLoad(e) {
 			//利用缓存读取用户的相关信息
 			this.expressAuthList = uni.getStorageSync('pickup').authList
@@ -65,8 +72,17 @@
 		},
 		onShow() {
 			_this = this
+			//  获取当前版本号
+			// #ifdef APP-PLUS
+			plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {
+				// let version = widgetInfo.version.replace(/\./g, '');
+				_this.versionCode = widgetInfo.version
+				console.log(widgetInfo)
+			})
+			// #endif 
+
 			// 获取提货点信息
-			this.pickup=this.$tool.getStorageSync('pickup')
+			this.pickup = this.$tool.getStorageSync('pickup')
 			// 校验有没有登录
 			if (!_this.$tool.getStorageSync('isLogin')) {
 				uni.reLaunch({
@@ -79,17 +95,17 @@
 
 		methods: {
 
-			exitUser(){
+			exitUser() {
 				console.log('exitUser')
 				this.$tool.clearAllStorage()
 				uni.navigateTo({
 					url: '../login/login'
 				})
-			
+
 			},
 			nav_pickup() {
 				uni.navigateTo({
-					url:'../pickup/pickup'
+					url: '../pickup/pickup'
 
 				})
 			},
@@ -116,9 +132,9 @@
 			getUnclaimednum() {
 
 				var _this = this;
-				_this.$http.getUnclaimednum().then(res=>{
+				_this.$http.getUnclaimednum().then(res => {
 					console.log(res);
-					_this.order_num=res.data.result.data
+					_this.order_num = res.data.result.data
 				})
 			}
 
@@ -127,14 +143,26 @@
 </script>
 
 <style lang="scss">
+	.version {
+		position: absolute;
+		bottom: 50rpx;
+		right: 50rpx;
+		font-size: 30rpx;
+		color: #555555;
+
+	}
+
 	.container {
 		width: 100%;
+		height: 100%;
 		overflow-x: hidden;
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-between;
 		box-sizing: border-box;
 		font-family: '微软雅黑';
+		overflow: hidden;
+		background-color: #FFFFFF;
 
 		.container-head {
 			position: relative;
@@ -142,6 +170,7 @@
 			width: 100%;
 			background-color: #EB3C39;
 			text-align: center;
+
 			.order-box {
 				padding-top: 100upx;
 
@@ -168,7 +197,8 @@
 				border-radius: 8rpx;
 				font-size: 24rpx;
 			}
-			.pickup2{
+
+			.pickup2 {
 				right: 40rpx;
 				left: auto;
 			}

@@ -2,7 +2,7 @@
 	<!-- 用户取件 -->
 	<view class="container">
 		<view class='row inputBox'>
-			<input :value='inputValue' class='delivery-input' placeholder="请输入取货码" type='number' focus="true" @input="deliveryInput"></input>
+			<input :value='inputValue' class='delivery-input' placeholder="请输入取货码" type='number'  @input="deliveryInput"></input>
 			<button @tap='submit' class='btn-sm'>确认</button>
 		</view>
 		<view class='scan' @tap='scanCode'>
@@ -66,6 +66,9 @@
 			scanCode() {
 				var that = this;
 				// 只允许通过相机扫码
+				if (uni.getSystemInfoSync().platform == "ios") {
+					plus.key.hideSoftKeybord()
+				}
 				uni.scanCode({
 					onlyFromCamera: true,
 					success: function(res) {
